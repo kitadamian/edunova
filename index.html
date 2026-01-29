@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduNova - Platforma Edukacyjna</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Light Theme - Eye Friendly */
+            --bg-primary: #faf9f6;
+            --bg-secondary: #f0efe9;
+            --bg-card: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #5a6578;
+            --text-muted: #718096;
+            --accent-primary: #4a90e2;
+            --accent-secondary: #48bb78;
+            --accent-tertiary: #ed8936;
+            --border-color: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --hover-bg: #edf2f7;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Theme - Eye Friendly (AMOLED safe) */
+            --bg-primary: #1a202c;
+            --bg-secondary: #2d3748;
+            --bg-card: #2d3748;
+            --text-primary: #e2e8f0;
+            --text-secondary: #a0aec0;
+            --text-muted: #718096;
+            --accent-primary: #63b3ed;
+            --accent-secondary: #68d391;
+            --accent-tertiary: #f6ad55;
+            --border-color: #4a5568;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --hover-bg: #4a5568;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .theme-toggle-slider {
+            position: absolute;
+            left: 4px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        [data-theme="dark"] .theme-toggle-slider {
+            transform: translateX(30px);
+            background: var(--accent-secondary);
+        }
+
+        .theme-icon {
+            color: white;
+            font-size: 10px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background-opacity: 0.9;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .logo::before {
+            content: '◆';
+            color: var(--accent-secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            color: var(--text-primary);
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: var(--accent-primary);
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(74, 144, 226, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(74, 144, 226, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            background: var(--hover-bg);
+        }
+
+        /* Sections */
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-primary);
+            margin: 0.75rem auto 0;
+            border-radius: 2px;
+            opacity: 0.8;
+        }
+
+        /* Education Cards */
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .edu-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .edu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .edu-card:hover::before {
+            opacity: 1;
+        }
+
+        .edu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px var(--shadow);
+            border-color: var(--accent-primary);
+        }
+
+        .edu-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .edu-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .edu-card > p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .edu-card ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .edu-card li {
+            padding: 0.4rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .edu-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-secondary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            line-height: 1.2;
+        }
+
+        /* Resources */
+        .resources-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .resource-category {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .resource-category:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 4px 6px -1px var(--shadow);
+        }
+
+        .resource-category h4 {
+            color: var(--accent-primary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .resource-list {
+            list-style: none;
+        }
+
+        .resource-list li {
+            margin-bottom: 0.6rem;
+        }
+
+        .resource-list a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            padding: 0.4rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin: 0 -0.4rem;
+        }
+
+        .resource-list a:hover {
+            color: var(--accent-primary);
+            background: var(--hover-bg);
+            transform: translateX(4px);
+        }
+
+        .resource-list a::before {
+            content: '→';
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            font-size: 0.8rem;
+        }
+
+        .resource-list a:hover::before {
+            opacity: 1;
+        }
+
+        /* Tools */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-secondary);
+            box-shadow: 0 10px 15px -3px var(--shadow);
+        }
+
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            display: inline-block;
+        }
+
+        .tool-card h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .tool-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Timer Widget */
+        .timer-widget {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 400px;
+            margin: 3rem auto;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px var(--shadow);
+        }
+
+        .timer-display {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            font-family: 'Courier New', monospace;
+            margin: 1.5rem 0;
+            letter-spacing: 2px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .timer-btn {
+            padding: 0.6rem 1.25rem;
+            border: none;
+            border-radius: 6px;
+            background: var(--accent-secondary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .timer-btn:hover {
+            filter: brightness(1.1);
+            transform: scale(1.05);
+        }
+
+        .timer-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Author Section */
+        .author-section {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .author-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .author-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.25rem;
+            border: 4px solid var(--bg-primary);
+            box-shadow: 0 10px 20px -5px var(--shadow);
+        }
+
+        .author-name {
+            font-size: 1.75rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .author-role {
+            color: var(--accent-primary);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .author-container > p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .author-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .author-link {
+            padding: 0.75rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .author-link:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px var(--shadow);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-primary);
+                flex-direction: column;
+                padding: 1rem;
+                border-bottom: 1px solid var(--border-color);
+                gap: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-controls {
+                gap: 1rem;
+            }
+
+            .hero {
+                padding: 4rem 1.5rem 3rem;
+            }
+
+            .section {
+                padding: 3rem 1rem;
+            }
+
+            .education-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .timer-display {
+                font-size: 2.5rem;
+            }
+
+            .resources-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus styles for accessibility */
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+        }
+
+        /* Selection color */
+        ::selection {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        [data-theme="dark"] ::selection {
+            background: var(--accent-secondary);
+            color: #1a202c;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 5px;
+            border: 2px solid var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">EduNova</a>
+            
+            <div class="nav-controls">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#poziomy">Poziomy</a></li>
+                    <li><a href="#zasoby">Źródła</a></li>
+                    <li><a href="#narzedzia">Narzędzia</a></li>
+                    <li><a href="#autor">Autor</a></li>
+                </ul>
+                
+                <!-- Theme Toggle -->
+                <div class="theme-toggle" onclick="toggleTheme()" aria-label="Przełącz tryb ciemny/jasny">
+                    <div class="theme-toggle-slider">
+                        <span class="theme-icon" id="themeIcon">☀️</span>
+                    </div>
+                </div>
+                
+                <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>
+            Odkrywaj <span>Wiedzę</span><br>
+            bez zmęczenia wzroku
+        </h1>
+        <p>Przyjazna dla oczu platforma edukacyjna z trybem dziennym i nocnym. Sprawdzone źródła nauki dla każdego poziomu edukacji.</p>
+        <div class="cta-buttons">
+            <a href="#zasoby" class="btn btn-primary">Przeglądaj Zasoby</a>
+            <a href="#narzedzia" class="btn btn-secondary">Rozpocznij Naukę</a>
+        </div>
+    </section>
+
+    <!-- Education Levels -->
+    <section class="section" id="poziomy">
+        <h2 class="section-title">Poziomy Edukacji</h2>
+        <div class="education-grid">
+            <div class="edu-card">
+                <div class="edu-icon">🏫</div>
+                <h3>Szkoła Podstawowa</h3>
+                <p>Klasy 1-8 - fundamenty wiedzy i rozwój kluczowych umiejętności</p>
+                <ul>
+                    <li>Matematyka i przyroda</li>
+                    <li>Język polski i obce</li>
+                    <li>Historia i społeczeństwo</li>
+                    <li>Informatyka i technika</li>
+                </ul>
+            </div>
+
+            <div class="edu-card">
+                <div class="edu-icon">🎓</div>
+                <h3>Szkoła Średnia</h3>
+                <p>Liceum, technikum, szkoła branżowa - przygotowanie do matury i zawodu</p>
+                <ul>
+                    <li>Przedmioty maturalne</li>
+                    <li>Kierunki techniczne</li>
+                    <li>Rozszerzenia przedmiotowe</li>
+                    <li>Przygotowanie zawodowe</li>
+                </ul>
+            </div>
+
+            <div class="edu-card">
+                <div class="edu-icon">🎓</div>
+                <h3>Szkolnictwo Wyższe</h3>
+                <p>Uniwersytety, politechniki, akademie - studia I, II i III stopnia</p>
+                <ul>
+                    <li>Nauki ścisłe i techniczne</li>
+                    <li>Nauki humanistyczne</li>
+                    <li>Nauki medyczne</li>
+                    <li>Studia doktoranckie</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="section" id="zasoby">
+        <h2 class="section-title">Oficjalne Źródła Edukacyjne</h2>
+        
+        <div class="resources-container">
+            <div class="resource-category">
+                <h4>🇵🇱 Polskie Zasoby</h4>
+                <ul class="resource-list">
+                    <li><a href="https://www.ore.gov.pl" target="_blank">Ośrodek Rozwoju Edukacji (ORE)</a></li>
+                    <li><a href="https://epodreczniki.pl" target="_blank">E-podręczniki (MEN)</a></li>
+                    <li><a href="https://www.gov.pl/web/edukacja" target="_blank">Ministerstwo Edukacji i Nauki</a></li>
+                    <li><a href="https://cke.gov.pl" target="_blank">Centralna Komisja Egzaminacyjna (CKE)</a></li>
+                    <li><a href="https://polona.pl" target="_blank">Biblioteka Cyfrowa Polona</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-category">
+                <h4>🌍 Międzynarodowe Platformy</h4>
+                <ul class="resource-list">
+                    <li><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></li>
+                    <li><a href="https://www.coursera.org" target="_blank">Coursera</a></li>
+                    <li><a href="https://ocw.mit.edu" target="_blank">MIT OpenCourseWare</a></li>
+                    <li><a href="https://www.edx.org" target="_blank">edX (Harvard, MIT)</a></li>
+                    <li><a href="https://scholar.google.com" target="_blank">Google Scholar</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-category">
+                <h4>🔬 Ścisłe i Techniczne</h4>
+                <ul class="resource-list">
+                    <li><a href="https://www.wolframalpha.com" target="_blank">WolframAlpha</a></li>
+                    <li><a href="https://www.geogebra.org" target="_blank">GeoGebra</a></li>
+                    <li><a href="https://arxiv.org" target="_blank">arXiv - Preprinty naukowe</a></li>
+                    <li><a href="https://pubmed.ncbi.nlm.nih.gov" target="_blank">PubMed - Medycyna</a></li>
+                    <li><a href="https://www.nature.com" target="_blank">Nature Journal</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-category">
+                <h4>📚 Humanistyczne</h4>
+                <ul class="resource-list">
+                    <li><a href="https://wolnelektury.pl" target="_blank">Wolne Lektury</a></li>
+                    <li><a href="https://www.worldhistory.org" target="_blank">World History Encyclopedia</a></li>
+                    <li><a href="https://www.gutenberg.org" target="_blank">Project Gutenberg</a></li>
+                    <li><a href="https://www.britannica.com" target="_blank">Encyclopaedia Britannica</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-category">
+                <h4>🗣️ Języki Obce</h4>
+                <ul class="resource-list">
+                    <li><a href="https://www.duolingo.com" target="_blank">Duolingo</a></li>
+                    <li><a href="https://www.bbc.co.uk/learningenglish" target="_blank">BBC Learning English</a></li>
+                    <li><a href="https://www.deutsch-perfekt.com" target="_blank">Deutsch Perfekt</a></li>
+                    <li><a href="https://www.cnn.com/cnn10" target="_blank">CNN 10</a></li>
+                </ul>
+            </div>
+
+            <div class="resource-category">
+                <h4>📝 Przygotowanie do Egzaminów</h4>
+                <ul class="resource-list">
+                    <li><a href="https://cke.gov.pl/egzamin-maturalny/" target="_blank">Informator Matura CKE</a></li>
+                    <li><a href="https://cke.gov.pl/egzamin-osmoklasisty/" target="_blank">Egzamin Ósmoklasisty</a></li>
+                    <li><a href="https://www.testy.ore.edu.pl" target="_blank">Testy ORE</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="section" id="narzedzia">
+        <h2 class="section-title">Narzędzia do Efektywnej Nauki</h2>
+        
+        <div class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-icon">⏱️</div>
+                <h4>Technika Pomodoro</h4>
+                <p>25 minut nauki, 5 minut przerwy. Zwiększa koncentrację bez zmęczenia.</p>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">📝</div>
+                <h4>Notatki Cornell</h4>
+                <p>System notowania podzielony na trzy strefy dla lepszego przyswajania wiedzy.</p>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">🧠</div>
+                <h4>Fiszki (Flashcards)</h4>
+                <p>Aktywna nauka przez powtórki z wykorzystaniem metody spaced repetition.</p>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-icon">🎯</div>
+                <h4>Mapy Myśli</h4>
+                <p>Wizualizacja powiązań między koncepcjami. Narzędzia: XMind, MindMeister.</p>
+            </div>
+        </div>
+
+        <!-- Interactive Timer -->
+        <div class="timer-widget">
+            <h3 style="color: var(--accent-primary); margin-bottom: 0.5rem;">Timer Pomodoro</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Skup się na zadaniu przez 25 minut</p>
+            <div class="timer-display" id="timer">25:00</div>
+            <div class="timer-controls">
+                <button class="timer-btn" onclick="startTimer()">Start</button>
+                <button class="timer-btn" onclick="pauseTimer()" style="background: var(--accent-tertiary);">Pauza</button>
+                <button class="timer-btn" onclick="resetTimer()" style="background: var(--text-muted);">Reset</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Author Section -->
+    <section class="author-section" id="autor">
+        <div class="author-container">
+            <div class="author-avatar">👨‍💻</div>
+            <h2 class="author-name">Damian Kita</h2>
+            <p class="author-role">Twórca EduNova</p>
+            <p>
+                Tworzę przyjazne dla użytkownika narzędzia edukacyjne, które dbają o Twój wzrok 
+                i pomagają w efektywnej nauce. Wszystkie zasoby są weryfikowane i pochodzą 
+                z oficjalnych źródeł.
+            </p>
+            <div class="author-links">
+                <a href="https://linktr.ee/kitadamian" target="_blank" class="author-link">
+                    <span>🌳</span> Linktree
+                </a>
+                <a href="https://linktr.ee/kitadamian" target="_blank" class="author-link">
+                    <span>💼</span> Portfolio
+                </a>
+                <a href="https://linktr.ee/kitadamian" target="_blank" class="author-link">
+                    <span>✉️</span> Kontakt
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#poziomy">Poziomy</a>
+            <a href="#zasoby">Źródła</a>
+            <a href="#narzedzia">Narzędzia</a>
+            <a href="https://linktr.ee/kitadamian" target="_blank">Kontakt</a>
+        </div>
+        <p>&copy; 2026 EduNova by Damian Kita. Wszystkie prawa zastrzeżone.</p>
+        <p style="margin-top: 0.5rem; opacity: 0.8;">
+            Zadbaj o swoje oczy - używaj trybu ciemnego wieczorem ☽
+        </p>
+    </footer>
+
+    <script>
+        // Theme Toggle Logic
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                updateThemeIcon(savedTheme);
+            } else if (systemPrefersDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                updateThemeIcon('dark');
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('themeIcon');
+            icon.textContent = theme === 'dark' ? '🌙' : '☀️';
+        }
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Pomodoro Timer
+        let timeLeft = 25 * 60;
+        let timerId = null;
+        let isRunning = false;
+
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const display = document.getElementById('timer');
+            display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            timerId = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateDisplay();
+                } else {
+                    pauseTimer();
+                    const message = document.documentElement.getAttribute('data-theme') === 'dark' 
+                        ? 'Czas nauki zakończony! Czas na przerwę. 🌙' 
+                        : 'Czas nauki zakończony! Czas na przerwę. ☀️';
+                    alert(message);
+                    timeLeft = 5 * 60;
+                    updateDisplay();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            isRunning = false;
+            clearInterval(timerId);
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeLeft = 25 * 60;
+            updateDisplay();
+        }
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // Initialize theme on load
+        initTheme();
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                const newTheme = e.matches ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                updateThemeIcon(newTheme);
+            }
+        });
+    </script>
+</body>
+</html>
